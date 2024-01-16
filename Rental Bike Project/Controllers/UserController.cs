@@ -5,6 +5,12 @@ namespace Rental_Bike_Project.Controllers
 {
     public class UserController : Controller
     {
+        private readonly MyContext _context;
+
+        public UserController(MyContext context)
+        {
+            _context = context;
+        }
         public IActionResult Home()
         {
             var username = Request.Cookies["Username"];
@@ -15,7 +21,8 @@ namespace Rental_Bike_Project.Controllers
         public IActionResult SignUp(SignUpModel user)
         {
               
-            return Json(new { success = true, message = "Signup successful." });
+           // return Json(new { success = true, message = "Signup successful." });
+            return View();
            
         }
 
@@ -32,7 +39,9 @@ namespace Rental_Bike_Project.Controllers
 
             Response.Cookies.Append("UserName", userdetails.Username, option);
 
-            return Json(new { success = true, message = "Login successful." });
+          //  return Json(new { success = true, message = "Login successful." });
+
+            return View();  
 
         }
 
@@ -44,9 +53,39 @@ namespace Rental_Bike_Project.Controllers
             return RedirectToAction("Home", "User");
         }
 
-        public IActionResult Bikes()
+        public IActionResult Bikes(int id)
         {
-            return View();  
+            if (id == 0)
+            {
+                var categories = _context.Bike_Categories.ToList();
+                var bikes = _context.Bike_Details.ToList();
+
+                var viewModel = new BikeViewModel
+                {
+                    Categories = categories,
+                    Bikes = bikes
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                var categories = _context.Bike_Categories.ToList();
+                var details = _context.Bike_Details
+                             .Where(detail => detail.Cid == id)
+                             .ToList();
+
+                var viewModel = new BikeViewModel
+                {
+                    Categories = categories,
+                    Bikes = details
+                };
+                return View(viewModel);
+            }
+            
         }
+
+        
+
+
     }
 }

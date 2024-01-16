@@ -14,7 +14,7 @@ namespace Rental_Bike_Project.Models
 
         public string Description { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] Image { get; set; }   
 
         public int Cid { get; set; } 
 
