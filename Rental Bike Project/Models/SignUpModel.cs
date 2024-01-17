@@ -5,6 +5,8 @@ namespace  Rental_Bike_Project.Models
 { 
     public class SignUpModel
     {
+        [Key]
+        public int Id { get; set; } 
         [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; }
 

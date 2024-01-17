@@ -20,28 +20,51 @@ namespace Rental_Bike_Project.Controllers
 
         public IActionResult SignUp(SignUpModel user)
         {
+            _context.RegisterUers.Add(user);
+            _context.SaveChanges(); 
               
-           // return Json(new { success = true, message = "Signup successful." });
-            return View();
+            return Json(new { success = true, message = "Signup successful." });
+          
            
         }
 
         public IActionResult Login(LoginModel userdetails)
         {
-            //HttpContext.Session.SetString("Username", userdetails.Username);
+            //HttpContext.Session.SetString("Username", userdetails.Username); 
             //HttpContext.Session.SetString("SessionKeyName", "The Doctor");
             //HttpContext.Session.SetInt32("SessionKeyAge", 73);
+           
+            var user = _context.RegisterUers.FirstOrDefault(u => u.Email == userdetails.Email);
 
-            CookieOptions option = new CookieOptions
+            if (user!=null)
             {
-                Expires = DateTime.Now.AddDays(30)
-            };
+                if(user.Password == userdetails.Password)
+                {
+                    var username = user.Username;
+                    CookieOptions option = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(30)
+                    };
 
-            Response.Cookies.Append("UserName", userdetails.Username, option);
+                    Response.Cookies.Append("UserName", username, option);
 
-          //  return Json(new { success = true, message = "Login successful." });
+                    return Json(new { success = true, message = "Login successful." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Login Unsuccessful." });
+                }
 
-            return View();  
+            }
+            else
+            {
+                return Json(new { success = false, message = "Login Unsuccessful." });
+            }
+
+
+            
+
+         //   return View();  
 
         }
 

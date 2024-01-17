@@ -12,15 +12,31 @@
 
     <!-- Bootstrap JS and Popper.js (if needed) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- Kendo UI Stylesheets -->
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.common.min.css" />
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.default.min.css" />
 
     <!-- Kendo UI Scripts -->
     <script src="https://kendo.cdn.telerik.com/2022.1.406/js/kendo.all.min.js"></script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.default.min.css" />
+    <!-- jQuery -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Kendo UI Scripts -->
+    <script src="https://kendo.cdn.telerik.com/2022.1.406/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.all.min.js"></script>
+    <script src="path/to/jquery.min.js"></script>
+    <script src="path/to/bootstrap.min.js"></script>
+
+
+
+
 
 
     <style>
@@ -61,11 +77,16 @@
                 @if (ViewBag.Username == null)
                 {
                     <li class="nav-item"><a class="nav-link active blue-hover" href="#">Home</a></li>
-                    <li><a class="nav-link blue-hover" asp-action="Bikes">Bikes</a></li>
+                    <li><a class="nav-link blue-hover" asp-action="Bikes" asp-controller="User">Bikes</a></li>
                     <li class="nav-item"><a class="nav-link blue-hover" href="#">Contact</a></li>
                     <li class="nav-item"><a class="nav-link blue-hover" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link blue-hover" asp-action="Login" asp-controller="User">Login</a></li>
-                    <li class="nav-item"><a class="nav-link blue-hover" asp-action="SignUp" asp-controller="User">SignUp</a></li>
+                    <!-- Login button -->
+                    <li class="nav-item"><a class="nav-link blue-hover" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                    <!-- Sign Up button -->
+                    <li class="nav-item">
+                        <a class="nav-link blue-hover" data-toggle="modal" data-target="#signupModal">SignUp</a>
+                    </li>
+
                 }
                 else
                 {
@@ -78,42 +99,110 @@
             </ul>
         </div>
     </nav>
-    
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.common.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2022.1.406/styles/kendo.default.min.css" />
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Kendo UI Scripts -->
-    <script src="https://kendo.cdn.telerik.com/2022.1.406/js/kendo.all.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.all.min.js"></script>
+    <!-- SignUp Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                        </div>
 
-  @*   <div id="carouselExampleInterval" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 1200px;">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img style="width: 100%;" src="~/css/img/slide1.jpeg" class="d-block" alt="...">
-            </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img style="width: 100%;" src="~/css/img/slide2.jpeg" class="d-block" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img style="width: 100%;" src="~/css/img/slide3.jpeg" class="d-block" alt="...">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mobileNumber" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter your mobile number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="signUpForm()">Sign Up</button>                
+                    </form>
+                </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon text-black" aria-hidden="true"></span>
-            <span class="visually-hidden text-black">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
- *@
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your LoginModel properties go here -->
+                    <form id="LoginForm">
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="Password" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="LoginForm()">Login</button>
+                        <div class="mt-3">
+                            <a href="javascript:void(0);" onclick="ForgotPassword()">Forgot Password ?</a>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Forgot Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Password Reset Form -->
+                    <form id="forgotPasswordForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Enter Your Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Create New Password</label>
+                            <input type="password" class="form-control" id="newPassword" placeholder="Create a new password" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="SubmitForgotPassword()">Reset Password</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div>
         <main>
@@ -128,68 +217,87 @@
         </div>
     </footer>
 
-    
     <script>
+        function signUpForm() {
+           
+            var formData = {
+                username: $("#username").val(),
+                email: $("#email").val(),
+                mobileNumber: $("#mobileNumber").val(),
+                password: $("#password").val(),
+                confirmPassword: $("#confirmPassword").val()
+            };
 
-        $('#signupForm').submit(function (event) {
-            event.preventDefault();
+            console.log(formData.username);
+           
             $.ajax({
-                type: 'POST',
-                url: '/User/SignUp',
-                data: $(this).serialize(),
+                type: "POST",
+                url: "/User/SignUp",
+                data: formData,
                 success: function (data) {
-                    if (data.success) {
+                    if (data.success) 
+                    { 
                         debugger;
-
-                        $('#signupForm')[0].reset();
-
-                        $('#signupModal').modal('hide');
-
+                        alert("Hii");
+                        $("#signupForm")[0].reset();
+                        $("#signupModal").modal("hide");
                         $('#loginModal').modal('show');
-                    } else {
+                    }            
 
-                        console.error('Signup was not successful:', data.message);
-                        alert(data.message);
-                    }
                 },
                 error: function (error) {
-
-                    console.error('Error during signup:', error);
-                    alert('An error occurred during signup. Please try again.');
+                    
+                    console.error(error);
                 }
             });
-        });
+        }
 
-        //Login Page
+        function LoginForm() {
+            debugger;
+            var formData = {
+                email: $("#Email").val(),
+                password: $("#Password").val(),
+            };
 
-        $('#LoginForm').submit(function (event) {
-            event.preventDefault();
+            console.log(formData.username);
+            console.log(formData.email);
+            console.log(formData.password);
+
             $.ajax({
-                type: 'POST',
-                url: '/User/Login',
-                data: $(this).serialize(),
+                type: "POST",
+                url: "/User/Login",
+                data: formData,
                 success: function (data) {
+                    console.log(data);
                     if (data.success) {
-                        debugger;
-
-                        $('#loginModal').modal('hide');
-
-                        window.location.href = '/User/Home';
-                    } else {
-
-                        console.error('Login was not successful:', data.message);
-                        alert(data.message);
+                        $("#loginModal").modal("hide");
+                        window.location.href = "/User/Home";
                     }
                 },
                 error: function (error) {
-
-                    console.error('Error during signup:', error);
-                    alert('An error occurred during Login Please try again.');
+                    console.error(error);
                 }
             });
-        });
+        }
+
+        function ForgotPassword() {
+
+           
+            $('#loginModal').modal('hide');
+            console.log("loginModal hidden");
+
+            // Show the modal
+            $("#forgotPasswordModal").modal('show');
+            console.log("forgotPasswordModal shown");
+
+              
+        }
+
 
     </script>
+
+    
+   
 
 </body>
 </html>
